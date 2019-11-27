@@ -1,0 +1,81 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+let Tickets = new Schema({
+    "date":"",
+	"time":"",
+	"from":"",
+	"to":"",
+	"bus":"",
+	"busNumber":"",
+	"seats":"",
+	"departureTime":"",
+	"arrivalTime":"",
+	"firstname":"",
+	"lastname":"",
+	"email":"",
+    "phone":""
+},{
+    collection:"Tickets"
+});
+
+let bus = new Schema({
+	busName:{type:String,required:true},
+	bus:{
+		seats:{
+			"one":{type:Boolean,required:true},
+			"two":{type:Boolean,required:true},
+			"three":{type:Boolean,required:true},
+			"four":{type:Boolean,required:true},
+			"five":{type:Boolean,required:true},
+			"six":{type:Boolean,required:true},
+			"seven":{type:Boolean,required:true},
+			"eight":{type:Boolean,required:true},
+			"nine":{type:Boolean,required:true},
+			"ten":{type:Boolean,required:true},
+			"eleven":{type:Boolean,required:true},
+			"twelve":{type:Boolean,required:true},
+			"thirteen":{type:Boolean,required:true},
+			"fourteen":{type:Boolean,required:true},
+			"fifteen":{type:Boolean,required:true},
+			"sixten":{type:Boolean,required:true},
+			"seventeen":{type:Boolean,required:true},
+			"eighten":{type:Boolean,required:true},
+			"nineteen":{type:Boolean,required:true},
+			"twenty":{type:Boolean,required:true},
+			"twentyone":{type:Boolean,required:true},
+			"twentytwo":{type:Boolean,required:true},
+			"twentythree":{type:Boolean,required:true},
+			"twentyfour":{type:Boolean,required:true},
+			"twentyfive":{type:Boolean,required:true},
+			"twentysix":{type:Boolean,required:true},
+			"twentyseven":{type:Boolean,required:true},
+			"twentyeight":{type:Boolean,required:true},
+			"twentynine":{type:Boolean,required:true},
+			"twentythirty":{type:Boolean,required:true},
+			"thirty":{type:Boolean,required:true},
+			"thirtyone":{type:Boolean,required:true},
+			"thirtytwo":{type:Boolean,required:true},
+			"thirtythree":{type:Boolean,required:true},
+			"thirtyfour":{type:Boolean,required:true},
+			"thirtyfive":{type:Boolean,required:true},
+			"thirtysix":{type:Boolean,required:true},
+			"thirtyseven":{type:Boolean,required:true},
+			"thirtyeight":{type:Boolean,required:true},
+			"thirtynine":{type:Boolean,required:true},
+			"fourty":{type:Boolean,required:true},
+		},
+		busNumber:{type:String,required:true},
+		routes:{
+			start:{type:String,required:true},
+			end:{type:String,required:true},
+		}
+	},
+	startTime:{type:String,required:true},
+	endTime:{type:String,required:true},
+	duration:{type:String,required:true},
+	fare:{
+		child:{type:String,required:true},
+		adult:{type:String,required:true}
+	}
+},{collection:"buses"});
