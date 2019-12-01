@@ -1,81 +1,68 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 
-let Tickets = new Schema({
-    "date":"",
-	"time":"",
-	"from":"",
-	"to":"",
-	"bus":"",
-	"busNumber":"",
-	"seats":"",
-	"departureTime":"",
-	"arrivalTime":"",
-	"firstname":"",
-	"lastname":"",
-	"email":"",
-    "phone":""
-},{
-    collection:"Tickets"
-});
+let Tickets = new Schema({   //let Tickets = new Schema( {data structure} , {collection:"collectionanme"} )
+	date: { type: String, required: true },
+	time: { type: String, required: true },
+	from: { type: String, required: true },
+	to: { type: String, required: true },
+	bus: { type: String, required: true },
+	busNumber: { type: String, required: true },
+	seats: { type: [Number], required: true },
+	departureTime: { type: String, required: true },
+	arrivalTime: { type: String, required: true },
+	firstname: { type: String, required: true },
+	lastname: { type: String, required: true },
+	email: { type: String, required: true },
+	phone: { type: String, required: true },
+	bill: { type: String, required: true }
+}, {
+		collection: "Tickets"
+	}
+);
 
 let bus = new Schema({
-	busName:{type:String,required:true},
-	bus:{
-		seats:{
-			"one":{type:Boolean,required:true},
-			"two":{type:Boolean,required:true},
-			"three":{type:Boolean,required:true},
-			"four":{type:Boolean,required:true},
-			"five":{type:Boolean,required:true},
-			"six":{type:Boolean,required:true},
-			"seven":{type:Boolean,required:true},
-			"eight":{type:Boolean,required:true},
-			"nine":{type:Boolean,required:true},
-			"ten":{type:Boolean,required:true},
-			"eleven":{type:Boolean,required:true},
-			"twelve":{type:Boolean,required:true},
-			"thirteen":{type:Boolean,required:true},
-			"fourteen":{type:Boolean,required:true},
-			"fifteen":{type:Boolean,required:true},
-			"sixten":{type:Boolean,required:true},
-			"seventeen":{type:Boolean,required:true},
-			"eighten":{type:Boolean,required:true},
-			"nineteen":{type:Boolean,required:true},
-			"twenty":{type:Boolean,required:true},
-			"twentyone":{type:Boolean,required:true},
-			"twentytwo":{type:Boolean,required:true},
-			"twentythree":{type:Boolean,required:true},
-			"twentyfour":{type:Boolean,required:true},
-			"twentyfive":{type:Boolean,required:true},
-			"twentysix":{type:Boolean,required:true},
-			"twentyseven":{type:Boolean,required:true},
-			"twentyeight":{type:Boolean,required:true},
-			"twentynine":{type:Boolean,required:true},
-			"twentythirty":{type:Boolean,required:true},
-			"thirty":{type:Boolean,required:true},
-			"thirtyone":{type:Boolean,required:true},
-			"thirtytwo":{type:Boolean,required:true},
-			"thirtythree":{type:Boolean,required:true},
-			"thirtyfour":{type:Boolean,required:true},
-			"thirtyfive":{type:Boolean,required:true},
-			"thirtysix":{type:Boolean,required:true},
-			"thirtyseven":{type:Boolean,required:true},
-			"thirtyeight":{type:Boolean,required:true},
-			"thirtynine":{type:Boolean,required:true},
-			"fourty":{type:Boolean,required:true},
-		},
-		busNumber:{type:String,required:true},
-		routes:{
-			start:{type:String,required:true},
-			end:{type:String,required:true},
+	busName: { type: String, required: true, },
+	bus: {
+		seats: { type: Object, required: true },
+		busNumber: { type: String, required: true },
+		routes: {
+			start: { type: String, required: true },
+			end: { type: String, required: true },
 		}
 	},
-	startTime:{type:String,required:true},
-	endTime:{type:String,required:true},
-	duration:{type:String,required:true},
-	fare:{
-		child:{type:String,required:true},
-		adult:{type:String,required:true}
+	startTime: { type: String, required: true },
+	endTime: { type: String, required: true },
+	duration: { type: String, required: true },
+	fare: {
+		child: { type: String, required: true },
+		adult: { type: String, required: true }
 	}
-},{collection:"buses"});
+}, { collection: "buses" });
+
+let Account = new Schema({
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+	name: {
+		firstname: { type: String, required: true },
+		lastname: { type: String, required: true },
+		middlename: { type: String, required: false },
+		suffix: { type: String, required: false }
+	},
+	position: { type: String, required: false }
+}, { collection: "accounts" })
+
+
+Account.pre("save", function (next) {
+	if (!this.isModified("password")) {
+		return next();
+	}
+	this.password = bcrypt.hashSync(this.password, 10);
+	next();
+});
+
+const Accounts = mongoose.model("Account", Account)
+const Ticket = mongoose.model("Tickets", Tickets);
+const Bus = mongoose.model("bus", bus)
+module.exports = { Ticket, Bus, Accounts };
