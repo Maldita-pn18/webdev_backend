@@ -16,7 +16,7 @@ let Tickets = new Schema({   //let Tickets = new Schema( {data structure} , {col
 	lastname: { type: String, required: true },
 	email: { type: String, required: true },
 	phone: { type: String, required: true },
-	bill: { type: String, required: true }
+	bill: { type: Number, required: true }
 }, {
 		collection: "Tickets"
 	}
@@ -36,8 +36,8 @@ let bus = new Schema({
 	endTime: { type: String, required: true },
 	duration: { type: String, required: true },
 	fare: {
-		child: { type: String, required: true },
-		adult: { type: String, required: true }
+		child: { type: Number, required: true },
+		adult: { type: Number, required: true }
 	}
 }, { collection: "buses" });
 
