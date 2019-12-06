@@ -4,6 +4,10 @@ let dateLocationCheck = require("./modules/dateLocation")
 let dummyAccount = require("./testingaddAccount")
 let login = require('./modules/login')
 let dashboard = require('./modules/dashboard')
+let bus = require('./modules/bus')
+let busAdd = require ('./modules/busAdd')
+let busDelete = require ('./modules/busDelete')
+let busUpdate = require('./modules/busUpdate')
 
 /*User routes*/
 //
@@ -44,6 +48,20 @@ routes.route('/login/admin/:username/:password').get((req, res) => {
 routes.route('/admin/dashboard').get((req, res) => {
     dashboard(req,res);
 });
+routes.route('/admin/bus/').get((req,res) => {
+    bus(req,res);
+})
+routes.route('/admin/busAdd').post((req,res) => {
+    // console.log(req.body);
+    busAdd(req,res)
+})
+routes.route('/admin/busDelete/:id').delete((req,res) => {
+    busDelete(req,res)
+})
+routes.route('/admin/busUpdate/:id').put((req,res) => {
+    busUpdate(req,res)
+})
+
 //
 //
 /* end of admin routes */
