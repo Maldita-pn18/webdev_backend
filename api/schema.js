@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 
 let Tickets = new Schema({   //let Tickets = new Schema( {data structure} , {collection:"collectionanme"} )
 	date: { type: String, required: true },
-	time: { type: String, required: true },
 	from: { type: String, required: true },
 	to: { type: String, required: true },
 	bus: { type: String, required: true },
@@ -14,8 +13,6 @@ let Tickets = new Schema({   //let Tickets = new Schema( {data structure} , {col
 	arrivalTime: { type: String, required: true },
 	firstname: { type: String, required: true },
 	lastname: { type: String, required: true },
-	email: { type: String, required: true },
-	phone: { type: String, required: true },
 	bill: { type: Number, required: true }
 }, {
 		collection: "Tickets"

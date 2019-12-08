@@ -8,6 +8,7 @@ let bus = require('./modules/bus')
 let busAdd = require ('./modules/busAdd')
 let busDelete = require ('./modules/busDelete')
 let busUpdate = require('./modules/busUpdate')
+let saveTicket = require('./modules/saveTickets')
 
 /*User routes*/
 //
@@ -25,6 +26,10 @@ routes.route('/checkout').post((req, res) => {
     //expected response from the database TicketNo, BusNo, SeatNo/s, expected Bill, Date , from, to, duration,
     //arrival Time, departure time,
     //get the data passed from the front-end use req.body
+});
+
+routes.route('/ticket/book').post((req,res) => {
+    saveTicket(req,res);
 });
 
 //
