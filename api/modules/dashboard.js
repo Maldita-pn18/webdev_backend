@@ -5,7 +5,9 @@ let successResponse = require("../helpers/setSuccessResponse");
 
 module.exports = (req, res) => {
     let day = date();
-    var re = new RegExp(day, "i");
+    let month = months();
+    let year = years();
+    let toQuery = month+" "+day+", "+year
     let responseData = {};
     /*
         return the tickets of the day only
@@ -13,48 +15,40 @@ module.exports = (req, res) => {
     model.Ticket.aggregate(
         [
             {
-                $match: { date: { $regex: re } }
+                $match: { date: toQuery}
             },
             {
-                $group: { _id: { date: '$date', bus: '$bus' }, count: { $sum: 1 } }
-            },
-            {
-                $group:{_id:'$_id.bus',busCount:{$sum:1}}
+                $group: { _id: { date: '$date'}, count: { $sum: 1 } }
             }
         ],
         (err, result) => {
+            responseData["ticketCount"] = result[0].count
             console.log(result)
-            // responseData["ticketCount"] = result[0].ticketCount
         }).catch(err => {
             response = errorResponse(404, err, "Service Unavailable!")
             res.status(response.status).send(response);
         });
-    // ).exec(function (err, data) {
-    //     starRatingCount = data;
-    //     console.log("this is data aggregate:", data);
-    // });
-
-    // model.Ticket.aggregate(
-    //     [
-    //         {
-    //             $match: { date: { $regex: re } }
-    //         },
-    //         {
-    //             $group: { _id: '$bus', busCount: { $sum: 1 } }
-    //         }
-    //     ], (err, result) => {
-    //         responseData["busCount"] = result[0].busCount
-    //     }).catch(err => {
-    //         response = errorResponse(404, err, "Service Unavailable!")
-    //         res.status(response.status).send(response);
-    //     })
-
-    // console.log(responseData)
-    // response = successResponse(404, responseData, "Service navailable!")
-    // res.status(response.status).send(response);
+    model.Bus.find({},(err,result)=>{
+        if(err){
+            response = errorResponse(503, err, "Service Unavailable");
+            res.send(response);
+        }
+        responseData["busCount"] = result.length
+        response = successResponse(203 ,responseData ,"Services Available!" );
+        res.send(response);
+    })
 }
 
 date = () => {
     let day = new Date().getDate();
-    return day
+    return day;
+}
+months = () => {
+    let months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    let month = new Date().getMonth();
+    return months[month];
+}
+years = () => {
+    let year = new Date().getFullYear();
+    return year;
 }

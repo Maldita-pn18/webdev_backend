@@ -1,14 +1,16 @@
 const express = require('express');
 const routes = express.Router();
-let dateLocationCheck = require("./modules/dateLocation")
-let dummyAccount = require("./testingaddAccount")
-let login = require('./modules/login')
-let dashboard = require('./modules/dashboard')
-let bus = require('./modules/bus')
-let busAdd = require ('./modules/busAdd')
-let busDelete = require ('./modules/busDelete')
-let busUpdate = require('./modules/busUpdate')
-let saveTicket = require('./modules/saveTickets')
+let dateLocationCheck = require("./modules/dateLocation");
+let dummyAccount = require("./testingaddAccount");
+let login = require('./modules/login');
+let dashboard = require('./modules/dashboard');
+let bus = require('./modules/bus');
+let busAdd = require ('./modules/busAdd');
+let busDelete = require ('./modules/busDelete');
+let busUpdate = require('./modules/busUpdate');
+let saveTicket = require('./modules/saveTickets');
+let bookings = require('./modules/bookings');
+let bookingDelete = require('./modules/deleteBooking');
 
 /*User routes*/
 //
@@ -66,7 +68,12 @@ routes.route('/admin/busDelete/:id').delete((req,res) => {
 routes.route('/admin/busUpdate/:id').put((req,res) => {
     busUpdate(req,res)
 })
-
+routes.route('/admin/bookings').get((req,res) => {
+    bookings(req,res);
+})
+routes.route('/admin/bookingDelete/:id').delete((req,res) => {
+    bookingDelete(req,res);
+})
 //
 //
 /* end of admin routes */

@@ -13,7 +13,8 @@ let Tickets = new Schema({   //let Tickets = new Schema( {data structure} , {col
 	arrivalTime: { type: String, required: true },
 	firstname: { type: String, required: true },
 	lastname: { type: String, required: true },
-	bill: { type: Number, required: true }
+	bill: { type: Number, required: true },
+	ticketNumber:{type:String,required:true,unique:true}
 }, {
 		collection: "Tickets"
 	}
