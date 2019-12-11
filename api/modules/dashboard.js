@@ -7,7 +7,7 @@ module.exports = (req, res) => {
     let day = date();
     let month = months();
     let year = years();
-    let toQuery = month+" "+day+", "+year
+    let toQuery = month + " " + day + ", " + year
     let responseData = {};
     /*
         return the tickets of the day only
@@ -15,26 +15,36 @@ module.exports = (req, res) => {
     model.Ticket.aggregate(
         [
             {
-                $match: { date: toQuery}
+                $match: { date: toQuery }
             },
             {
-                $group: { _id: { date: '$date'}, count: { $sum: 1 } }
+                $group: { _id: { date: '$date' }, count: { $sum: 1 } }
             }
         ],
         (err, result) => {
-            responseData["ticketCount"] = result[0].count
-            console.log(result)
+            if (result.length !== 0) {
+                responseData["ticketCount"] = result[0].count
+            }
         }).catch(err => {
             response = errorResponse(404, err, "Service Unavailable!")
             res.status(response.status).send(response);
         });
-    model.Bus.find({},(err,result)=>{
-        if(err){
+    model.Ticket.find({date:toQuery},(err,result)=>{
+        let total = 0;
+        result.forEach(item=>{
+            total += item.bill
+        })
+        responseData["dailyTotal"] = total
+    })
+    model.Bus.find({}, (err, result) => {
+        if (err) {
             response = errorResponse(503, err, "Service Unavailable");
             res.send(response);
         }
-        responseData["busCount"] = result.length
-        response = successResponse(203 ,responseData ,"Services Available!" );
+        if (result.length !== 0) {
+            responseData["busCount"] = result.length
+        }
+        response = successResponse(203, responseData, "Services Available!");
         res.send(response);
     })
 }
@@ -44,7 +54,7 @@ date = () => {
     return day;
 }
 months = () => {
-    let months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let month = new Date().getMonth();
     return months[month];
 }

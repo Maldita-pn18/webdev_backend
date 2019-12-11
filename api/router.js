@@ -11,6 +11,7 @@ let busUpdate = require('./modules/busUpdate');
 let saveTicket = require('./modules/saveTickets');
 let bookings = require('./modules/bookings');
 let bookingDelete = require('./modules/deleteBooking');
+let busSchedule = require('./modules/busSchedule');
 
 /*User routes*/
 //
@@ -74,6 +75,10 @@ routes.route('/admin/bookings').get((req,res) => {
 routes.route('/admin/bookingDelete/:id').delete((req,res) => {
     bookingDelete(req,res);
 })
+routes.route('/admin/busSchedule').get((req,res)=>{
+    busSchedule(req,res);
+})
+
 //
 //
 /* end of admin routes */
